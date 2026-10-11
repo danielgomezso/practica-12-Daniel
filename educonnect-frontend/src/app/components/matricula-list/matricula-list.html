@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <h2>Dashboard de Matrículas - EduConnect</h2>
+  
+  <!-- Botones de Filtrado (Reaccionan al Signal) -->
+  <div class="mb-3">
+    <button (click)="cambiarFiltro('TODAS')" [class.active]="filtroEstado() === 'TODAS'">Todas</button>
+    <button (click)="cambiarFiltro('ACTIVA')" [class.active]="filtroEstado() === 'ACTIVA'">Activas</button>
+    <button (click)="cambiarFiltro('COMPLETADA')" [class.active]="filtroEstado() === 'COMPLETADA'">Completadas</button>
+    <button (click)="cambiarFiltro('CANCELADA')" [class.active]="filtroEstado() === 'CANCELADA'">Canceladas</button>
+  </div>
+
+  <!-- Tabla de Resultados -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Estudiante (Carnet)</th>
+        <th>Curso</th>
+        <th>Profesor</th>
+        <th>Periodo</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of matriculasFiltradas()">
+        <td>{{ m.codigoMatricula }}</td>
+        <td>{{ m.nombreEstudiante }} ({{ m.carnetEstudiante }})</td>
+        <td>{{ m.nombreCurso }}</td>
+        <td>{{ m.nombreProfesor }}</td>
+        <td>{{ m.periodo }}</td>
+        <td>
+          <span class="badge" 
+                [ngClass]="{
+                  'bg-success': m.estado === 'ACTIVA',
+                  'bg-primary': m.estado === 'COMPLETADA',
+                  'bg-danger': m.estado === 'CANCELADA'
+                }">
+            {{ m.estado }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div *ngIf="matriculasFiltradas().length === 0" class="alert alert-info">
+    No hay matrículas para el estado seleccionado.
+  </div>
+</div>
